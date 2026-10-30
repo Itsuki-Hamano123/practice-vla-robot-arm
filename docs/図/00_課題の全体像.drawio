@@ -1,0 +1,99 @@
+<mxfile host="65bd71144e">
+    <diagram id="d1" name="課題の全体像">
+        <mxGraphModel dx="1768" dy="640" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1420" pageHeight="780" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="c2" parent="1" style="text;align=left;verticalAlign=top;fontSize=12;fontStyle=1;fontSize=16;" value="課題の全体像：言語指示で動作を切り替える VLA を、自分で集めたデモデータセットでファインチューニングする" vertex="1">
+                    <mxGeometry height="24" width="1000" x="20" y="10" as="geometry"/>
+                </mxCell>
+                <mxCell id="c3" parent="1" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;swimlaneFillColor=#ffffff;fontStyle=1;fontSize=13;" value="① ゴール：VLAを使うと、言語指示だけで挙動（掴む箱）を切り替えられるのが特徴的なので、それを確かめてみる" vertex="1">
+                    <mxGeometry height="260" width="1360" x="20" y="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="sc" parent="c3" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="Gazebo 上の SO-101 アーム&#xa;机の上に赤箱・青箱&#xa;（左右の配置はランダムに入替）" vertex="1">
+                    <mxGeometry height="140" width="260" x="30" y="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="p1" parent="c3" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" value="指示（英語）&#xa;&quot;pick up the red box&quot;" vertex="1">
+                    <mxGeometry height="60" width="250" x="360" y="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="p2" parent="c3" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="指示（英語）&#xa;&quot;pick up the blue box&quot;" vertex="1">
+                    <mxGeometry height="60" width="250" x="360" y="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="md" parent="c3" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="SmolVLA（VLA）&#xa;画像＋関節角＋指示文 → 行動" vertex="1">
+                    <mxGeometry height="100" width="250" x="690" y="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="q1" parent="c3" style="rounded=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" value="赤箱を持ち上げる" vertex="1">
+                    <mxGeometry height="60" width="300" x="1020" y="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="q2" parent="c3" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" value="青箱を持ち上げる" vertex="1">
+                    <mxGeometry height="60" width="300" x="1020" y="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="c4" edge="1" parent="1" source="sc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="md" value="観測（カメラ画像2枚・関節角）">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="180" y="275"/>
+                            <mxPoint x="835" y="275"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="c5" edge="1" parent="1" source="p1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.3;entryDx=0;entryDy=0;" target="md" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c6" edge="1" parent="1" source="p2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.7;entryDx=0;entryDy=0;" target="md" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c7" edge="1" parent="1" source="md" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.3;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="q1" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c8" edge="1" parent="1" source="md" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=1;exitY=0.7;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="q2" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c9" parent="1" style="swimlane;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;swimlaneFillColor=#ffffff;fontStyle=1;fontSize=13;" value="② 進め方：デモ収集 → ファインチューニング → 評価" vertex="1">
+                    <mxGeometry height="230" width="1360" x="20" y="340" as="geometry"/>
+                </mxCell>
+                <mxCell id="a" parent="c9" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Phase A（Zero-Shot）&#xa;smolvla_base をそのまま推論&#xa;（VLAであっても基本は下流タスクでの&#xa;学習が必要であることを体験）" vertex="1">
+                    <mxGeometry height="90" width="230" x="30" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="b" parent="c9" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="ファインチューニング用のデモ収集&#xa;IK で軌道を自動生成&#xa;成功 100 エピソード（赤50・青50）" vertex="1">
+                    <mxGeometry height="90" width="230" x="310" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="c" parent="c9" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=12;" value="ファインチューニング（GPU）&#xa;収集したデモデータセットで smolvla_base を&#xa;追加学習（lerobot-train）" vertex="1">
+                    <mxGeometry height="90" width="230" x="590" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="dd" parent="c9" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" value="Phase B 推論&#xa;ファインチューニング済みモデルで&#xa;同じパイプラインで実行" vertex="1">
+                    <mxGeometry height="90" width="230" x="870" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="ev" parent="c9" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;" value="評価・比較&#xa;赤青×左右入替×10回＝40試行&#xa;Phase A と Phase B を比べる" vertex="1">
+                    <mxGeometry height="90" width="200" x="1140" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="c10" edge="1" parent="1" source="a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;" target="b" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c11" edge="1" parent="1" source="b" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;" target="c" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c12" edge="1" parent="1" source="c" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;" target="dd" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c13" edge="1" parent="1" source="dd" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;" target="ev" value="">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c14" parent="1" style="swimlane;startSize=28;fillColor=#f5f5f5;strokeColor=#666666;swimlaneFillColor=#ffffff;fontStyle=1;fontSize=13;" value="③ 可視化：収集したデモデータセットもロボットの振る舞いも rerun（フィジカルAIデータの可視化ライブラリ） で見る" vertex="1">
+                    <mxGeometry height="150" width="1360" x="20" y="600" as="geometry"/>
+                </mxCell>
+                <mxCell id="rr" parent="c14" style="rounded=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" value="rerun（.rrd ファイル／ライブ表示）&#xa;カメラ画像・関節角・指令・予測した行動チャンク・箱の位置と成功判定・推論時間を、同じ時間軸で並べて確認" vertex="1">
+                    <mxGeometry height="70" width="1290" x="30" y="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="c15" edge="1" parent="1" source="a" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0.05;entryY=0;entryDx=0;entryDy=0;dashed=1;" target="rr" value="推論の挙動">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c16" edge="1" parent="1" source="b" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.3;entryY=0;entryDx=0;entryDy=0;dashed=1;" target="rr" value="デモデータセット（dataset_to_rrd.py）">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="c17" edge="1" parent="1" source="dd" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;strokeColor=#333333;fontSize=11;labelBackgroundColor=#ffffff;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.7;entryY=0;entryDx=0;entryDy=0;dashed=1;" target="rr" value="推論の挙動">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

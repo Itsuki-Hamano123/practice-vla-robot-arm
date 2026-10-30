@@ -1,0 +1,30 @@
+# GPU マシン用の上書き設定（WSL2 + NVIDIA GPU で確認。docs/sim速度設定.md）
+# 起動：docker compose -f compose.yaml -f compose.gpu.yaml up -d --build
+services:
+  sim:
+    # WSL2 では GPU の OpenGL は /dev/dxg と Mesa の d3d12 ドライバ経由で使う（NVIDIA の GLX ドライバは WSL に無い）。
+    # これが無いとカメラの描画が CPU のソフトウェア描画（llvmpipe）になり、壁時計で約 2 枚/秒しか出ない
+    devices:
+      - /dev/dxg
+      - /dev/dri
+    environment:
+      LD_LIBRARY_PATH: /usr/lib/wsl/lib
+      GALLIUM_DRIVER: d3d12
+      MESA_D3D12_DEFAULT_ADAPTER_NAME: NVIDIA
+      # GPU ではカメラ2台が RTF 1 でも 30Hz 出るので、sim を実時間で動かす（CPU 用は table.world の 80）
+      SIM_REAL_TIME_UPDATE_RATE: "500"
+    volumes:
+      - /usr/lib/wsl:/usr/lib/wsl:ro
+
+  policy:
+    build:
+      args:
+        # torch 2.7.1（CPU 版と同じ版）の CUDA 版がある index。cu121 は torch 2.5 系までしか無い
+        TORCH_INDEX: https://download.pytorch.org/whl/cu126
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]

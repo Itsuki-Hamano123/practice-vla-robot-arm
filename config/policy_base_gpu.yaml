@@ -1,0 +1,25 @@
+# Phase A の GPU 版：policy_base.yaml と同じで、device を cuda にしたもの（docs/sim速度設定.md）
+model_path: lerobot/smolvla_base
+device: cuda
+num_threads: null        # torch のスレッド数（null なら torch の既定）
+sync_mode: false         # GPU環境ではモデル推論が約 0.3 秒なので、現実世界での実行を考慮して、推論中であっても sim 内の時間を止めたりしない（推論したアクションチャンクは全部実行してから、次のアクションチャンクの推論を開始する。実装のシンプルさのため、同期的な推論で実装した。）
+control_hz: 30
+n_action_steps: 50       # チャンク（50）のうち実行する数
+max_chunks: 6            # 1エピソードの推論回数（6 × 50 ステップ ≒ 10 秒の動作）
+stop_on_done: true       # success / wrong になったら終える
+reset: true              # 始める前に /scene/reset する
+instruction: "pick up the red box"
+# トピック → モデルの入力キー。smolvla_base は camera1〜3（256×256 の記載だが、モデル内で 512×512 にパディング付きで縮小される）。
+# camera3 は渡さなくても推論できる。生画像は rclpy のデシリアライズが遅いので /compressed（JPEG）を使う
+camera_map:
+  /cam_front/image_raw/compressed: observation.images.camera1
+  /cam_wrist/image_raw/compressed: observation.images.camera2
+image_size: null         # [幅, 高さ] に縮小してから渡す。null ならそのまま（640×480）
+state_unit: degree       # 学習データ（SO-100 系）の関節の単位。行動も同じ単位
+# 正規化の統計。smolvla_base には 'so100' / 'so100-red' / 'so100-blue' の action の統計しかない（PolicyRunner 参照）
+norm_stats: so100
+max_step: 0.05           # 1ステップ（1/30 秒）あたりの関節の最大変化 [rad]。位置指令は関節を直接動かすので、急な飛びを防ぐ
+rerun:
+  save_dir: outputs/rrd
+  live: false
+  urdf: outputs/so101.urdf

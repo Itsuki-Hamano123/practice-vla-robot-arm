@@ -1,0 +1,8 @@
+# 実行結果（.rrd・評価結果・動画素材）
+outputs/
+# colcon
+build/
+install/
+log/
+# Python のバイトコード
+**/__pycache__/

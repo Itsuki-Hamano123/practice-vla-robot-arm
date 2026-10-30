@@ -1,0 +1,42 @@
+# 起動：docker compose up -d --build / 入る：docker compose exec sim bash
+# GPU マシンでは compose.gpu.yaml を重ねる（docker compose -f compose.yaml -f compose.gpu.yaml up）
+x-common: &common
+  network_mode: host
+  ipc: host
+  environment: &common-env
+    ROS_DOMAIN_ID: "${ROS_DOMAIN_ID:-42}"
+    RMW_IMPLEMENTATION: rmw_fastrtps_cpp
+  volumes:
+    - .:/ws
+
+services:
+  sim:
+    <<: *common
+    build:
+      context: docker/sim
+    # WSLg 経由で Gazebo の GUI を表示する（だめなら VNC に切り替える）
+    environment:
+      <<: *common-env
+      DISPLAY: "${DISPLAY:-:0}"
+      WAYLAND_DISPLAY: "${WAYLAND_DISPLAY:-wayland-0}"
+      XDG_RUNTIME_DIR: /mnt/wslg/runtime-dir
+      PULSE_SERVER: /mnt/wslg/PulseServer
+      # オンラインのモデル DB（models.gazebosim.org）は提供終了しているので見に行かせない
+      GAZEBO_MODEL_DATABASE_URI: ""
+    volumes:
+      - .:/ws
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /mnt/wslg:/mnt/wslg
+    command: sleep infinity
+
+  policy:
+    <<: *common
+    build:
+      context: docker/policy
+    volumes:
+      - .:/ws
+      - hf-cache:/root/.cache/huggingface
+    command: sleep infinity
+
+volumes:
+  hf-cache:
